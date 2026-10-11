@@ -30,23 +30,24 @@
   }
   h1,h2,h3{font-family:'Libre Baskerville', Georgia, serif; margin:0; font-weight:700;}
   p{margin:0;}
-  /* ===== SLIDE DECK: horizontal, 1 slide = 1 full-screen page ===== */
+  /* ===== SLIDE DECK: 1 slide = 1 full-screen page, swapped instantly (no sliding) ===== */
   .deck{
-    display:flex;
-    flex-direction:row;
-    width:calc(20 * 100vw);
+    position:relative;
+    width:100vw;
     height:100vh;
-    transition:transform 0.45s cubic-bezier(.4,0,.2,1);
   }
   .page{
-    flex:0 0 100vw;
+    position:absolute;
+    top:0; left:0;
     width:100vw;
     height:100vh;
     box-sizing:border-box;
     padding:90px max(80px, calc((100vw - 1180px) / 2));
     overflow-y:auto;
     scrollbar-width:thin;
+    display:none;
   }
+  .page.active{display:block;}
   .page.dark{background:var(--navy); color:#EDEFF2;}
   .nav-btn{
     position:fixed; top:50%; transform:translateY(-50%); z-index:60;
@@ -127,8 +128,8 @@
   @media print{
     body{overflow:visible;}
     .toc, .nav-btn, .slide-counter{display:none;}
-    .deck{display:block; width:auto; height:auto; transform:none !important;}
-    .page{page-break-after:always; width:auto; height:auto; flex:none; overflow:visible; max-width:none; padding:60px 70px;}
+    .deck{position:static; width:auto; height:auto;}
+    .page{position:static; page-break-after:always; width:auto; height:auto; overflow:visible; max-width:none; padding:60px 70px; display:block !important;}
   }
   @media (max-width:860px){
     .page{padding:60px 28px;}
@@ -690,7 +691,7 @@
     .bindPopup('<b>Titik Ujung Ruas B</b><br>Colomadu – Banyuanyar');
 </script>
 <script>
-  // ===== SLIDE NAVIGATION (horizontal deck, 1 slide = 1 page) =====
+  // ===== SLIDE NAVIGATION (1 slide = 1 page, instant swap — no sliding) =====
   // Kept in its own <script> tag so page-to-page navigation still works
   // even if the Leaflet maps above fail to load (e.g. no internet).
   (function(){
@@ -709,7 +710,8 @@
     }
 
     function render(){
-      deck.style.transform = 'translateX(-' + (current * 100) + 'vw)';
+      slides.forEach(function(s, i){ s.classList.toggle('active', i === current); });
+      slides[current].scrollTop = 0;
       counterEl.textContent = (current + 1) + ' / ' + total;
       navLinks.forEach(function(a){
         a.classList.toggle('active', a.getAttribute('href') === '#' + slides[current].id);
