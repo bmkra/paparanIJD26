@@ -48,6 +48,7 @@
     display:none;
   }
   .page.active{display:block;}
+  .page.active.flex-page{display:flex;}
   .page.dark{background:var(--navy); color:#EDEFF2;}
   .nav-btn{
     position:fixed; top:50%; transform:translateY(-50%); z-index:60;
@@ -124,7 +125,7 @@
   }
   .toc a:hover{color:#FFFFFF; border-bottom-color:var(--red);}
   .toc a.active{color:#FFFFFF; border-bottom-color:var(--red); background:rgba(179,32,44,0.18);}
-  .divider-page{min-height:70vh; display:flex; flex-direction:column; justify-content:center; gap:28px;}
+  .divider-page{min-height:70vh; flex-direction:column; justify-content:center; gap:28px;}
   @media print{
     body{overflow:visible;}
     .toc, .nav-btn, .slide-counter{display:none;}
@@ -173,7 +174,7 @@
 <div class="deck" id="deck">
 
 <!-- 1. COVER -->
-<section class="page dark" id="cover" style="min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;">
+<section class="page dark flex-page" id="cover" style="min-height:100vh; flex-direction:column; justify-content:space-between;">
   <div>
     <p class="eyebrow">Pemerintah Kabupaten Karanganyar</p>
     <div style="width:120px; height:4px; background:var(--red); margin-top:20px;"></div>
@@ -193,7 +194,7 @@
 </section>
 
 <!-- 1b. PAKET IJD 2026 — COLOMADU-BANYUANYAR (DIVIDER) -->
-<section class="page dark divider-page" id="colomadu-divider">
+<section class="page dark divider-page flex-page" id="colomadu-divider">
   <p class="eyebrow" style="letter-spacing:6px;">Paket IJD Tahun Anggaran 2026</p>
   <h1 style="font-size:56px; color:#FFFFFF; line-height:1.2;">Ruas Jalan Colomadu – Banyuanyar</h1>
   <div style="display:flex; gap:16px; flex-wrap:wrap;">
@@ -303,7 +304,7 @@
 </section>
 
 <!-- 3. ALTERNATIF 1 DIVIDER -->
-<section class="page dark divider-page" id="alt1-divider">
+<section class="page dark divider-page flex-page" id="alt1-divider">
   <p class="eyebrow" style="letter-spacing:6px;">Alternatif 1</p>
   <h1 style="font-size:56px; color:#FFFFFF; line-height:1.2;">Ruas Jalan Matesih – Girilayu</h1>
   <div style="display:flex; gap:16px; flex-wrap:wrap;">
@@ -457,7 +458,7 @@
 </section>
 
 <!-- 10. ALTERNATIF 2 DIVIDER -->
-<section class="page dark divider-page" id="alt2-divider">
+<section class="page dark divider-page flex-page" id="alt2-divider">
   <p class="eyebrow" style="letter-spacing:6px;">Alternatif 2</p>
   <h1 style="font-size:56px; color:#FFFFFF; line-height:1.2;">Ruas Jalan Girilayu – Watusambang</h1>
   <div style="display:flex; gap:16px; flex-wrap:wrap;">
@@ -608,7 +609,7 @@
 </section>
 
 <!-- 17. PENUTUP -->
-<section class="page dark" id="penutup" style="min-height:90vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:28px;">
+<section class="page dark flex-page" id="penutup" style="min-height:90vh; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:28px;">
   <p class="eyebrow">Permohonan Dukungan</p>
   <h2 style="font-size:34px; color:#FFFFFF; max-width:960px; line-height:1.4;">Bersama ruas Colomadu–Banyuanyar yang telah diperoleh, Pemerintah Kabupaten Karanganyar memohon dukungan pendanaan IJD untuk dua ruas tambahan yang membentuk satu korkidor: Matesih–Girilayu dan Girilayu–Watusambang</h2>
   <p style="font-size:19px; color:#C7CDD4; max-width:760px; line-height:1.6;">guna mewujudkan konektivitas wilayah dari Kecamatan Matesih hingga Tawangmangu, mendukung pelestarian wisata religi-budaya nasional, dan memperkuat ekonomi kerakyatan di sepanjang korkidor.</p>
