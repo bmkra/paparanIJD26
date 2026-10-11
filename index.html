@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capaian &amp; Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@400;700&family=Public+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+  :root{
+    --navy:#1C2B39;
+    --navy-2:#24374A;
+    --paper:#F7F5F0;
+    --red:#B3202C;
+    --red-dark:#7A1620;
+    --muted:#5B6570;
+    --muted-2:#8A8370;
+    --line:#E3DFD2;
+    --green:#2F7D4F;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Public Sans', Arial, sans-serif;
+    background:var(--paper);
+    color:#2B3540;
+    line-height:1.5;
+  }
+  h1,h2,h3{font-family:'Libre Baskerville', Georgia, serif; margin:0; font-weight:700;}
+  p{margin:0;}
+  .page{
+    max-width:1180px;
+    margin:0 auto;
+    padding:90px 80px;
+  }
+  .page.dark{background:var(--navy); color:#EDEFF2;}
+  .page.dark + .page.dark{border-top:1px solid rgba(255,255,255,0.08);}
+  .eyebrow{
+    font-size:16px; letter-spacing:3px; font-weight:600; color:var(--red);
+    text-transform:uppercase;
+  }
+  .dark .eyebrow{color:#D98A93;}
+  .section-title{font-size:40px; color:var(--navy); margin-bottom:36px;}
+  .dark .section-title{color:#FFFFFF;}
+  .lede{font-size:19px; line-height:1.7; color:var(--muted); max-width:760px;}
+  .dark .lede{color:#C7CDD4;}
+  .card{
+    background:#FFFFFF; border:1px solid var(--line); border-radius:14px; padding:28px 32px;
+  }
+  .dark .card{background:var(--navy-2); border:none;}
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .grid-3{display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px;}
+  .stat-label{font-size:14px; color:var(--muted-2); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px;}
+  .stat-value{font-size:30px; font-weight:700; color:var(--navy);}
+  .dark .stat-value{color:#FFFFFF;}
+  table.data{width:100%; border-collapse:collapse; font-size:16px;}
+  table.data td, table.data th{padding:12px 10px; border-bottom:1px solid var(--line); text-align:left;}
+  table.data th{color:var(--muted-2); font-weight:600; font-size:13px; text-transform:uppercase; letter-spacing:0.5px;}
+  table.data td.num{text-align:right; font-variant-numeric:tabular-nums;}
+  table.data tr.total td{font-weight:700; border-top:2px solid var(--navy); border-bottom:none; padding-top:16px;}
+  .pill{
+    display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600;
+    padding:6px 14px; border-radius:999px; background:#FBEAEA; color:var(--red);
+  }
+  .dark .pill{background:#24374A; color:#C7CDD4;}
+  .list-item{
+    display:flex; gap:20px; align-items:flex-start; background:#FFFFFF; border:1px solid var(--line);
+    border-radius:12px; padding:20px 26px; font-size:17px;
+  }
+  .list-item .dot{
+    flex:none; width:10px; height:10px; border-radius:50%; margin-top:8px; background:var(--green);
+  }
+  .list-item.warn .dot{background:var(--red);}
+  .note{
+    font-size:14px; color:var(--muted-2); background:#FBF3E6; border:1px solid #EAD9B6; border-radius:10px;
+    padding:14px 18px; margin-top:28px;
+  }
+  .footer-tag{
+    display:flex; justify-content:space-between; font-size:13px; color:var(--muted-2); margin-top:56px;
+    padding-top:18px; border-top:1px solid var(--line);
+  }
+  .dark .footer-tag{color:#8D97A1; border-top-color:rgba(255,255,255,0.12);}
+  .layer{display:flex; align-items:center; padding:0 18px; color:#FFFFFF; font-size:15px;}
+  #map, #map2, #map3{height:420px; border-radius:14px; border:1px solid var(--line); margin-top:20px;}
+  .route-legend{display:flex; gap:24px; margin-top:14px; font-size:14px; color:var(--muted); flex-wrap:wrap;}
+  .route-legend span{display:inline-flex; align-items:center; gap:8px;}
+  .swatch{width:14px; height:14px; border-radius:3px;}
+  .cover-title{font-size:58px; line-height:1.15; color:#FFFFFF; margin:24px 0;}
+  .cover-sub{font-size:30px; font-weight:400; color:#C7CDD4;}
+  .toc{position:sticky; top:0; z-index:10; background:rgba(28,43,57,0.96); backdrop-filter:blur(4px);
+       display:flex; gap:0; overflow-x:auto; padding:0 24px;}
+  .toc a{
+    color:#C7CDD4; text-decoration:none; font-size:13px; padding:16px 18px; white-space:nowrap; border-bottom:2px solid transparent;
+  }
+  .toc a:hover{color:#FFFFFF; border-bottom-color:var(--red);}
+  .divider-page{min-height:70vh; display:flex; flex-direction:column; justify-content:center; gap:28px;}
+  @media print{
+    .toc{display:none;}
+    .page{page-break-after:always; max-width:none; padding:60px 70px;}
+  }
+  @media (max-width:860px){
+    .page{padding:60px 28px;}
+    .grid-2, .grid-3{grid-template-columns:1fr;}
+    .cover-title{font-size:40px;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <a href="#cover">Sampul</a>
+  <a href="#colomadu-divider">Capaian IJD 2026</a>
+  <a href="#colomadu-profil">Profil Colomadu–Banyuanyar</a>
+  <a href="#colomadu-nilai-strategis">Nilai Strategis</a>
+  <a href="#dasar-hukum">Dasar Hukum</a>
+  <a href="#alt1-divider">Alternatif 1</a>
+  <a href="#latar-belakang">Latar Belakang</a>
+  <a href="#nilai-strategis">Nilai Strategis</a>
+  <a href="#identitas">Identitas &amp; Peta</a>
+  <a href="#lingkup">Lingkup Pekerjaan</a>
+  <a href="#rab">RAB</a>
+  <a href="#kesiapan">Kesiapan</a>
+  <a href="#alt2-divider">Alternatif 2</a>
+  <a href="#latar-belakang-2">Latar Belakang</a>
+  <a href="#nilai-strategis-2">Nilai Strategis</a>
+  <a href="#identitas-2">Identitas &amp; Peta</a>
+  <a href="#lingkup-2">Lingkup Pekerjaan</a>
+  <a href="#rab-2">RAB</a>
+  <a href="#kesiapan-2">Kesiapan</a>
+  <a href="#penutup">Penutup</a>
+</nav>
+
+<!-- 1. COVER -->
+<section class="page dark" id="cover" style="min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;">
+  <div>
+    <p class="eyebrow">Pemerintah Kabupaten Karanganyar</p>
+    <div style="width:120px; height:4px; background:var(--red); margin-top:20px;"></div>
+  </div>
+  <div>
+    <h1 class="cover-title" style="font-size:48px;">Capaian &amp; Usulan Dukungan Pendanaan<br>Inpres Jalan Daerah (IJD)</h1>
+    <p class="cover-sub">Ruas Colomadu–Banyuanyar (IJD 2026) dan Usulan Dua Alternatif Ruas Baru: Matesih–Girilayu &amp; Girilayu–Watusambang, Kabupaten Karanganyar</p>
+  </div>
+  <div>
+    <p style="font-size:18px; margin-bottom:6px;">Disampaikan oleh Bupati Karanganyar kepada</p>
+    <p style="font-size:18px; font-weight:600;">Direktorat Jenderal Bina Marga, Kementerian Pekerjaan Umum Republik Indonesia</p>
+  </div>
+  <div class="footer-tag">
+    <span>Colomadu–Banyuanyar · Alt. 1 Matesih–Girilayu · Alt. 2 Girilayu–Watusambang</span>
+    <span>Tahun Anggaran 2026</span>
+  </div>
+</section>
+
+<!-- 1b. PAKET IJD 2026 — COLOMADU-BANYUANYAR (DIVIDER) -->
+<section class="page dark divider-page" id="colomadu-divider">
+  <p class="eyebrow" style="letter-spacing:6px;">Paket IJD Tahun Anggaran 2026</p>
+  <h1 style="font-size:56px; color:#FFFFFF; line-height:1.2;">Ruas Jalan Colomadu – Banyuanyar</h1>
+  <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    <span class="pill">Rekonstruksi · Perkerasan Kaku</span>
+    <span class="pill">3,618 km</span>
+    <span class="pill">Kec. Colomadu</span>
+  </div>
+  <p style="font-size:17px; color:#8D97A1; max-width:760px; line-height:1.6;">Paket pekerjaan yang telah diperoleh Kabupaten Karanganyar melalui skema Inpres Jalan Daerah (IJD) — bukti komitmen dan kesiapan pelaksanaan Kabupaten Karanganyar dalam program ini.</p>
+  <div class="footer-tag"><span>Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</span><span>2</span></div>
+</section>
+
+<!-- 1c. PROFIL & CAPAIAN COLOMADU-BANYUANYAR -->
+<section class="page" id="colomadu-profil">
+  <h2 class="section-title">Profil Paket &amp; Capaian</h2>
+  <div class="grid-2">
+    <table class="data">
+      <tr><td style="color:var(--muted-2);">Nama Paket</td><td style="font-weight:600;">Rekonstruksi Ruas Jalan Colomadu – Banyuanyar</td></tr>
+      <tr><td style="color:var(--muted-2);">No. Ruas / Kecamatan</td><td style="font-weight:600;">4 / Colomadu</td></tr>
+      <tr><td style="color:var(--muted-2);">Kabupaten / Provinsi</td><td style="font-weight:600;">Karanganyar / Jawa Tengah</td></tr>
+      <tr><td style="color:var(--muted-2);">Panjang Penanganan</td><td style="font-weight:600;">3,618 km (STA 0+000 – 3+618)</td></tr>
+      <tr><td style="color:var(--muted-2);">Jenis Perkerasan</td><td style="font-weight:600;">Perkerasan Kaku — Beton Semen fs&#39; 4,5 MPa t=20 cm</td></tr>
+      <tr><td style="color:var(--muted-2);">Lebar Perkerasan</td><td style="font-weight:600;">5,50 m (2 lajur @2,75 m) + bahu</td></tr>
+      <tr><td style="color:var(--muted-2);">Konsultan Perencana</td><td style="font-weight:600;">PT. Skala Pilar Lima</td></tr>
+      <tr><td style="color:var(--muted-2);">Status</td><td style="font-weight:700;color:var(--green);">Paket IJD TA 2026 — Telah Diperoleh</td></tr>
+    </table>
+    <div style="display:flex; flex-direction:column; gap:20px; justify-content:center;">
+      <div class="card" style="background:var(--navy); border:none;">
+        <div class="stat-label" style="color:#A9B1B9;">Total Perkiraan Biaya</div>
+        <div style="font-size:44px; font-weight:700; color:#FFFFFF;">Rp 16.500.000.000</div>
+      </div>
+      <div>
+        <p style="font-size:14px; color:var(--muted); margin-bottom:8px;">Komposisi Anggaran</p>
+        <div style="display:flex; width:100%; height:32px; border-radius:8px; overflow:hidden;">
+          <div style="width:67%; background:var(--red);"></div>
+          <div style="width:33%; background:var(--line);"></div>
+        </div>
+        <p style="font-size:14px; color:var(--muted); margin-top:8px;">67,0% Perkerasan Berbutir &amp; Beton Semen · 33,0% divisi lainnya</p>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="padding:18px; margin-top:28px;">
+    <div id="map3"></div>
+    <div class="route-legend">
+      <span><span class="swatch" style="background:#B3202C;"></span>Trase ruas (data KML jaringan jalan)</span>
+      <span><span class="swatch" style="background:#1C2B39;border-radius:50%;"></span>Titik ujung ruas</span>
+    </div>
+    <p style="font-size:12px; color:var(--muted-2); margin-top:8px;">Peta menampilkan geometri ruas sesuai data jaringan jalan (panjang administratif 5,28 km); lingkup pekerjaan TA 2026 mencakup 3,618 km dari ruas tersebut.</p>
+  </div>
+  <p class="note" style="background:#EAF2EC; border-color:#C8DFCE; color:var(--muted);">Paket ini menjadi bukti kesiapan teknis dan kelembagaan Kabupaten Karanganyar dalam program IJD. Berikut dua usulan ruas tambahan yang diajukan untuk tahun anggaran berikutnya.</p>
+  <div class="footer-tag"><span>Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</span><span>3</span></div>
+</section>
+
+<!-- 1d. NILAI STRATEGIS COLOMADU-BANYUANYAR -->
+<section class="page dark" id="colomadu-nilai-strategis">
+  <h2 class="section-title">Nilai Strategis &amp; Urgensi Ruas</h2>
+  <div class="grid-3">
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Gerbang Aglomerasi Solo Raya</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Kecamatan Colomadu adalah wilayah eksklave Kabupaten Karanganyar yang berbatasan langsung dengan Kota Surakarta dan Kabupaten Boyolali — menjadikan ruas ini jalur penghubung penting dalam kawasan aglomerasi Solo Raya.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Kawasan Wisata Heritage</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Melintasi kawasan berkembang pesat di sekitar De Tjolomadoe — bekas pabrik gula peninggalan kolonial yang ditransformasi menjadi destinasi wisata heritage dan pusat kegiatan budaya berskala regional.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Visibilitas Nasional</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Kecamatan Colomadu menjadi lokasi kediaman purnatugas Presiden RI ke-7 — meningkatkan kebutuhan standar infrastruktur jalan yang representatif dan andal di wilayah ini.</p>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</span><span>4</span></div>
+</section>
+
+<!-- 2. DASAR HUKUM (berlaku untuk kedua alternatif) -->
+<section class="page" id="dasar-hukum">
+  <h2 class="section-title">Dasar Hukum &amp; Kesesuaian Kebijakan</h2>
+  <div style="display:flex; flex-direction:column; gap:16px;">
+    <div class="list-item">
+      <div class="dot"></div>
+      <div>
+        <p style="font-weight:600; font-size:18px; color:var(--navy);">Instruksi Presiden Nomor 11 Tahun 2025</p>
+        <p style="color:var(--muted); margin-top:4px;">Percepatan Peningkatan Konektivitas Jalan Daerah — dasar hukum program IJD, mendukung swasembada pangan dan energi nasional.</p>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="dot"></div>
+      <div>
+        <p style="font-weight:600; font-size:18px; color:var(--navy);">RPJMN 2025–2029</p>
+        <p style="color:var(--muted); margin-top:4px;">Prioritas konektivitas jalan daerah menuju jaringan jalan berstatus lebih tinggi dan kawasan strategis.</p>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="dot"></div>
+      <div>
+        <p style="font-weight:600; font-size:18px; color:var(--navy);">RTRW Kabupaten Karanganyar — Perda No. 19 Tahun 2019</p>
+        <p style="color:var(--muted); margin-top:4px;">Arahan pengembangan jaringan jalan dan kawasan strategis pariwisata-budaya.</p>
+      </div>
+    </div>
+    <div class="list-item">
+      <div class="dot"></div>
+      <div>
+        <p style="font-weight:600; font-size:18px; color:var(--navy);">Status Ruas Jalan Kabupaten</p>
+        <p style="color:var(--muted); margin-top:4px;">Jl. Matesih–Girilayu (Ruas No. 145) &amp; Jl. Girilayu–Watusambang (Ruas No. 130), sesuai SK status jalan — syarat usulan melalui aplikasi SITIA.</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</span><span>5</span></div>
+</section>
+
+<!-- 3. ALTERNATIF 1 DIVIDER -->
+<section class="page dark divider-page" id="alt1-divider">
+  <p class="eyebrow" style="letter-spacing:6px;">Alternatif 1</p>
+  <h1 style="font-size:56px; color:#FFFFFF; line-height:1.2;">Ruas Jalan Matesih – Girilayu</h1>
+  <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    <span class="pill">Rekonstruksi</span>
+    <span class="pill">3,78 km</span>
+    <span class="pill">Kec. Matesih · Ruas No. 145</span>
+  </div>
+  <div class="footer-tag"><span>Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</span><span>6</span></div>
+</section>
+
+<!-- 4. LATAR BELAKANG -->
+<section class="page" id="latar-belakang">
+  <h2 class="section-title">Latar Belakang &amp; Permasalahan</h2>
+  <div class="grid-2">
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <p class="lede">Ruas Jalan Matesih – Girilayu merupakan jalan kabupaten yang menghubungkan pusat Kecamatan Matesih dengan kawasan Girilayu di lereng Gunung Lawu.</p>
+      <p class="lede">Kondisi perkerasan saat ini memerlukan rekonstruksi menyeluruh — bukan sekadar pemeliharaan berkala — ditandai lingkup galian perkerasan lama dan perbaikan campuran aspal panas di hampir seluruh ruas.</p>
+      <p class="lede">Keterbatasan fiskal APBD Kabupaten Karanganyar untuk membiayai penanganan senilai hampir Rp9,5 miliar menjadi dasar permohonan dukungan pendanaan pusat.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <div class="card"><div class="stat-label">Panjang Penanganan</div><div class="stat-value">3,78 km</div></div>
+      <div class="card"><div class="stat-label">Status Jalan</div><div class="stat-value" style="font-size:24px;">Jalan Kabupaten · Ruas No. 145</div></div>
+      <div class="card"><div class="stat-label">Jenis Penanganan</div><div class="stat-value">Rekonstruksi</div></div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 1 — Ruas Matesih–Girilayu</span><span>7</span></div>
+</section>
+
+<!-- 5. NILAI STRATEGIS -->
+<section class="page dark" id="nilai-strategis">
+  <h2 class="section-title">Nilai Strategis &amp; Urgensi Ruas</h2>
+  <div class="grid-3">
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Wisata Religi Nasional</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Akses menuju Astana Giribangun &amp; Astana Mangadeg di Desa Girilayu — kompleks makam Presiden RI ke-2 dan keluarga, destinasi ziarah berskala nasional.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Ekonomi Kerakyatan</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Desa Girilayu dikenal sebagai Desa Wisata Batik Girilayu, sentra UMKM batik tulis — akses jalan mendukung distribusi produk dan kunjungan wisatawan.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Konektivitas Wilayah</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Melintasi tiga desa — Matesih, Karangbangun, Girilayu — memperkuat jaringan jalan kabupaten menuju kawasan lereng Gunung Lawu.</p>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 1 — Ruas Matesih–Girilayu</span><span>8</span></div>
+</section>
+
+<!-- 6. IDENTITAS + PETA (ALT 1) -->
+<section class="page" id="identitas">
+  <h2 class="section-title">Identitas, Profil Teknis &amp; Peta Ruas</h2>
+  <div class="grid-2">
+    <table class="data">
+      <tr><td style="color:var(--muted-2);">Nama Paket</td><td style="font-weight:600;">Rekonstruksi Ruas Jalan Matesih – Girilayu</td></tr>
+      <tr><td style="color:var(--muted-2);">No. Ruas / Kecamatan</td><td style="font-weight:600;">145 / Matesih</td></tr>
+      <tr><td style="color:var(--muted-2);">Desa Dilalui</td><td style="font-weight:600;">Matesih, Karangbangun, Girilayu</td></tr>
+      <tr><td style="color:var(--muted-2);">Kabupaten / Provinsi</td><td style="font-weight:600;">Karanganyar / Jawa Tengah</td></tr>
+      <tr><td style="color:var(--muted-2);">Panjang Penanganan</td><td style="font-weight:600;">3,78 km (STA 0+000 – 3+780)</td></tr>
+      <tr><td style="color:var(--muted-2);">Lebar Perkerasan</td><td style="font-weight:600;">6,00 m + bahu 2×0,60 m</td></tr>
+      <tr><td style="color:var(--muted-2);">Fungsi Jalan (data jaringan)</td><td style="font-weight:600;">JLS — Jalan Kabupaten</td></tr>
+      <tr><td style="color:var(--muted-2);">Konsultan Perencana</td><td style="font-weight:600;">PT. Skala Pilar Lima</td></tr>
+      <tr><td style="color:var(--muted-2);">Tahun Perencanaan (DED)</td><td style="font-weight:600;">2026</td></tr>
+    </table>
+    <div>
+      <div class="card" style="padding:18px;">
+        <div id="map"></div>
+        <div class="route-legend">
+          <span><span class="swatch" style="background:#B3202C;"></span>Trase ruas (data KML)</span>
+          <span><span class="swatch" style="background:#1C2B39;border-radius:50%;"></span>Titik awal / akhir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 1 — Ruas Matesih–Girilayu</span><span>9</span></div>
+</section>
+
+<!-- 7. LINGKUP PEKERJAAN (ALT 1) -->
+<section class="page" id="lingkup">
+  <h2 class="section-title">Lingkup Pekerjaan &amp; Desain Teknis</h2>
+  <div class="grid-2">
+    <div class="card">
+      <p style="color:var(--muted-2); font-size:14px;">Segmen 1 · STA 0+000 – 1+100</p>
+      <h3 style="font-size:22px; color:var(--navy); margin:8px 0 16px;">Asbuton Pracampur</h3>
+      <div style="border-radius:8px; overflow:hidden;">
+        <div class="layer" style="background:var(--red); height:46px;">AC-WC Asbuton Pracampur, t=4 cm</div>
+        <div class="layer" style="background:var(--red-dark); height:58px;">AC-BC Asbuton Pracampur, t=6 cm</div>
+      </div>
+      <p style="margin-top:14px; font-size:14px; color:var(--muted);">+ Galian perkerasan lama tanpa cold milling, perbaikan CAP, bahu beton fc'20 t=15 cm</p>
+    </div>
+    <div class="card">
+      <p style="color:var(--muted-2); font-size:14px;">Segmen 2 · STA 1+100 – 3+780</p>
+      <h3 style="font-size:22px; color:var(--navy); margin:8px 0 16px;">Asbuton Pracampur</h3>
+      <div style="border-radius:8px; overflow:hidden;">
+        <div class="layer" style="background:var(--red); height:46px;">AC-WC Asbuton Pracampur, t=4 cm</div>
+        <div class="layer" style="background:var(--red-dark); height:58px;">AC-BC Asbuton Pracampur, t=6 cm</div>
+      </div>
+      <p style="margin-top:14px; font-size:14px; color:var(--muted);">+ Perbaikan AC-BC, bahu beton fc'15 t=15 cm</p>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-top:20px;">
+    <div class="list-item"><div class="dot"></div><p>Talud pasangan batu (TPT) STA 0+691–1+000 sisi kiri, tinggi 2,10 m</p></div>
+    <div class="list-item"><div class="dot"></div><p>Drainase gorong-gorong, galian-timbunan, marka jalan, patok lalin, SMKK/K3</p></div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 1 — Ruas Matesih–Girilayu</span><span>10</span></div>
+</section>
+
+<!-- 8. RAB (ALT 1) -->
+<section class="page" id="rab">
+  <h2 class="section-title">Rencana Anggaran Biaya</h2>
+  <div class="grid-2">
+    <table class="data">
+      <tr><th>No</th><th>Divisi Pekerjaan</th><th style="text-align:right;">Nilai (Rp)</th></tr>
+      <tr><td>1</td><td>Umum</td><td class="num">71.013.743</td></tr>
+      <tr><td>2</td><td>Drainase</td><td class="num">30.056.773</td></tr>
+      <tr><td>3</td><td>Tanah &amp; Geosintetik</td><td class="num">11.574.095</td></tr>
+      <tr><td>6</td><td style="color:var(--red); font-weight:600;">Perkerasan Aspal</td><td class="num" style="color:var(--red); font-weight:700;">8.906.821.501</td></tr>
+      <tr><td>7</td><td>Struktur</td><td class="num">353.782.917</td></tr>
+      <tr><td>9</td><td>Pekerjaan Harian &amp; Lain-lain</td><td class="num">44.410.234</td></tr>
+      <tr><td>10</td><td>Pemeliharaan</td><td class="num">82.340.737</td></tr>
+      <tr class="total"><td colspan="2">Total (Dibulatkan)</td><td class="num">9.500.000.000</td></tr>
+    </table>
+    <div style="display:flex; flex-direction:column; gap:20px; justify-content:center;">
+      <div class="card" style="background:var(--navy); border:none;">
+        <div class="stat-label" style="color:#A9B1B9;">Total Perkiraan Biaya</div>
+        <div style="font-size:44px; font-weight:700; color:#FFFFFF;">Rp 9.500.000.000</div>
+      </div>
+      <div>
+        <p style="font-size:14px; color:var(--muted); margin-bottom:8px;">Komposisi Anggaran</p>
+        <div style="display:flex; width:100%; height:32px; border-radius:8px; overflow:hidden;">
+          <div style="width:93.8%; background:var(--red);"></div>
+          <div style="width:6.2%; background:var(--line);"></div>
+        </div>
+        <p style="font-size:14px; color:var(--muted); margin-top:8px;">93,8% Perkerasan Aspal · 6,2% divisi lainnya</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 1 — Ruas Matesih–Girilayu</span><span>11</span></div>
+</section>
+
+<!-- 9. KESIAPAN (ALT 1) -->
+<section class="page" id="kesiapan">
+  <h2 class="section-title">Kesiapan Pelaksanaan</h2>
+  <div style="display:flex; flex-direction:column; gap:14px;">
+    <div class="list-item"><div class="dot"></div><p>Detail Engineering Design (DED) lengkap — RAB dan gambar perencanaan tersusun oleh PT. Skala Pilar Lima, disahkan Juni 2026</p></div>
+    <div class="list-item"><div class="dot"></div><p>Dokumen SMKK (Sistem Manajemen Keselamatan Konstruksi) tersedia dalam RAB</p></div>
+    <div class="list-item warn"><div class="dot"></div><p>Status jalan kabupaten jelas (Ruas No. 145) — <em>riwayat penanganan DAK 2–3 tahun terakhir pada titik yang sama agar dikonfirmasi</em></p></div>
+    <div class="list-item warn"><div class="dot"></div><p>Status lahan dalam ruang milik jalan existing — <em>agar dikonfirmasi tidak ada kebutuhan pembebasan lahan</em></p></div>
+    <div class="list-item"><div class="dot"></div><p>Siap diusulkan melalui aplikasi SITIA untuk verifikasi Direktorat SSPJJ, Ditjen Bina Marga</p></div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 1 — Ruas Matesih–Girilayu</span><span>12</span></div>
+</section>
+
+<!-- 10. ALTERNATIF 2 DIVIDER -->
+<section class="page dark divider-page" id="alt2-divider">
+  <p class="eyebrow" style="letter-spacing:6px;">Alternatif 2</p>
+  <h1 style="font-size:56px; color:#FFFFFF; line-height:1.2;">Ruas Jalan Girilayu – Watusambang</h1>
+  <div style="display:flex; gap:16px; flex-wrap:wrap;">
+    <span class="pill">Rekonstruksi &amp; Pelebaran</span>
+    <span class="pill">3,66 km</span>
+    <span class="pill">Kec. Tawangmangu · Ruas No. 130</span>
+  </div>
+  <p style="font-size:17px; color:#8D97A1; max-width:700px;">Menyambung langsung dari ujung Alternatif 1 (STA 3+780 Matesih–Girilayu)</p>
+  <div class="footer-tag"><span>Usulan Dukungan Pendanaan IJD — Kabupaten Karanganyar</span><span>13</span></div>
+</section>
+
+<!-- 11. LATAR BELAKANG (ALT 2) -->
+<section class="page" id="latar-belakang-2">
+  <h2 class="section-title">Latar Belakang &amp; Permasalahan</h2>
+  <div class="grid-2">
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <p class="lede">Ruas Jalan Girilayu – Watusambang melanjutkan korkidor dari ujung Alternatif 1, menembus Desa Plumbon menuju wilayah Kecamatan Tawangmangu.</p>
+      <p class="lede">Lebar perkerasan existing hanya 3,50 m — terlalu sempit untuk volume lalu lintas saat ini — sehingga penanganan memerlukan rekonstruksi sekaligus pelebaran menjadi 5,90 m.</p>
+      <p class="lede">Senilai Rp10 miliar, penanganan ini berada di luar kapasitas fiskal APBD Kabupaten Karanganyar untuk dibiayai sekaligus dengan Alternatif 1.</p>
+    </div>
+    <div style="display:flex; flex-direction:column; gap:18px;">
+      <div class="card"><div class="stat-label">Panjang Penanganan</div><div class="stat-value">3,66 km</div></div>
+      <div class="card"><div class="stat-label">Status Jalan</div><div class="stat-value" style="font-size:24px;">Jalan Kabupaten · Ruas No. 130</div></div>
+      <div class="card"><div class="stat-label">Jenis Penanganan</div><div class="stat-value" style="font-size:26px;">Rekonstruksi &amp; Pelebaran</div></div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 2 — Ruas Girilayu–Watusambang</span><span>14</span></div>
+</section>
+
+<!-- 12. NILAI STRATEGIS (ALT 2) -->
+<section class="page dark" id="nilai-strategis-2">
+  <h2 class="section-title">Nilai Strategis &amp; Urgensi Ruas</h2>
+  <div class="grid-3">
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Kelanjutan Korkidor</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Menyambung langsung dari ujung Alternatif 1 (STA 3+780), memperpanjang konektivitas menuju wilayah Kecamatan Tawangmangu, kawasan wisata dataran tinggi lereng Gunung Lawu.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Akses Fasilitas Publik</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Melayani TK Pertiwi 01 Girilayu, SDN 02 &amp; SDN 03 Plumbon, Balai Desa Plumbon, serta rumah ibadah di sepanjang ruas.</p>
+    </div>
+    <div class="card">
+      <h3 style="font-size:22px; color:#FFFFFF; margin-bottom:12px;">Kapasitas &amp; Keselamatan</h3>
+      <p style="font-size:16px; color:#C7CDD4;">Pelebaran dari 3,5 m menjadi 5,9 m meningkatkan kapasitas tampung dan keselamatan lalu lintas pada ruas yang sebelumnya sempit.</p>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 2 — Ruas Girilayu–Watusambang</span><span>15</span></div>
+</section>
+
+<!-- 13. IDENTITAS + PETA (ALT 2) -->
+<section class="page" id="identitas-2">
+  <h2 class="section-title">Identitas, Profil Teknis &amp; Peta Ruas</h2>
+  <div class="grid-2">
+    <table class="data">
+      <tr><td style="color:var(--muted-2);">Nama Paket</td><td style="font-weight:600;">Rekonstruksi &amp; Pelebaran Ruas Girilayu – Watusambang</td></tr>
+      <tr><td style="color:var(--muted-2);">No. Ruas / Kecamatan</td><td style="font-weight:600;">130 / Tawangmangu</td></tr>
+      <tr><td style="color:var(--muted-2);">Desa Dilalui</td><td style="font-weight:600;">Girilayu, Plumbon</td></tr>
+      <tr><td style="color:var(--muted-2);">Kabupaten / Provinsi</td><td style="font-weight:600;">Karanganyar / Jawa Tengah</td></tr>
+      <tr><td style="color:var(--muted-2);">Panjang Penanganan</td><td style="font-weight:600;">3,66 km (STA 0+000 – 3+660)</td></tr>
+      <tr><td style="color:var(--muted-2);">Lebar Perkerasan</td><td style="font-weight:600;">3,50 m &#8594; 5,90 m (pelebaran)</td></tr>
+      <tr><td style="color:var(--muted-2);">Konsultan Perencana</td><td style="font-weight:600;">PT. Skala Pilar Lima</td></tr>
+      <tr><td style="color:var(--muted-2);">Tahun Perencanaan (DED)</td><td style="font-weight:600;">2026</td></tr>
+    </table>
+    <div>
+      <div class="card" style="padding:18px;">
+        <div id="map2"></div>
+        <div class="route-legend">
+          <span><span class="swatch" style="background:#B3202C;"></span>Trase ruas (data KML)</span>
+          <span><span class="swatch" style="background:#1C2B39;border-radius:50%;"></span>Titik awal / akhir</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 2 — Ruas Girilayu–Watusambang</span><span>16</span></div>
+</section>
+
+<!-- 14. LINGKUP PEKERJAAN (ALT 2) -->
+<section class="page" id="lingkup-2">
+  <h2 class="section-title">Lingkup Pekerjaan &amp; Desain Teknis</h2>
+  <div class="grid-2">
+    <div class="card">
+      <p style="color:var(--muted-2); font-size:14px;">Seluruh Ruas · STA 0+000 – 3+660</p>
+      <h3 style="font-size:22px; color:var(--navy); margin:8px 0 16px;">Pelebaran Jalan</h3>
+      <p style="font-size:15px; line-height:1.6; color:var(--muted);">Lebar perkerasan 3,50 m diperlebar menjadi 5,90 m (+1,20 m tiap sisi), dengan Lapis Fondasi Agregat Kelas A t=20 cm sebagai struktur baru pada bagian pelebaran dan bahu beton fc'15 t=20 cm.</p>
+    </div>
+    <div class="card">
+      <p style="color:var(--muted-2); font-size:14px;">Seluruh Ruas · Overlay</p>
+      <h3 style="font-size:22px; color:var(--navy); margin:8px 0 16px;">Struktur Perkerasan</h3>
+      <div style="border-radius:8px; overflow:hidden;">
+        <div class="layer" style="background:var(--red); height:46px;">AC-WC Asbuton Butir, t=4 cm</div>
+        <div class="layer" style="background:var(--red-dark); height:58px;">AC-BC Asbuton Butir, t=6 cm</div>
+      </div>
+      <p style="margin-top:14px; font-size:14px; color:var(--muted);">+ Perbaikan AC-BC pada bagian perkerasan existing</p>
+    </div>
+  </div>
+  <div class="grid-2" style="margin-top:20px;">
+    <div class="list-item"><div class="dot"></div><p>Peninggian saluran (talud) STA 1+700–1+725 sisi kiri, tinggi 3,20 m</p></div>
+    <div class="list-item"><div class="dot"></div><p>TPT STA 1+795–1+810 sisi kiri tinggi 2,10 m; drainase, marka jalan, patok lalin, SMKK/K3</p></div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 2 — Ruas Girilayu–Watusambang</span><span>17</span></div>
+</section>
+
+<!-- 15. RAB (ALT 2) -->
+<section class="page" id="rab-2">
+  <h2 class="section-title">Rencana Anggaran Biaya</h2>
+  <div class="grid-2">
+    <table class="data">
+      <tr><th>No</th><th>Divisi Pekerjaan</th><th style="text-align:right;">Nilai (Rp)</th></tr>
+      <tr><td>1</td><td>Umum</td><td class="num">65.900.340</td></tr>
+      <tr><td>2</td><td>Drainase</td><td class="num">30.056.773</td></tr>
+      <tr><td>3</td><td>Tanah &amp; Geosintetik</td><td class="num">128.965.173</td></tr>
+      <tr><td>5</td><td>Perkerasan Berbutir</td><td class="num">1.118.795.023</td></tr>
+      <tr><td>6</td><td style="color:var(--red); font-weight:600;">Perkerasan Aspal</td><td class="num" style="color:var(--red); font-weight:700;">7.553.503.440</td></tr>
+      <tr><td>7</td><td>Struktur</td><td class="num">983.307.453</td></tr>
+      <tr><td>9</td><td>Pekerjaan Harian &amp; Lain-lain</td><td class="num">53.599.210</td></tr>
+      <tr><td>10</td><td>Pemeliharaan</td><td class="num">65.872.589</td></tr>
+      <tr class="total"><td colspan="2">Total (Dibulatkan)</td><td class="num">10.000.000.000</td></tr>
+    </table>
+    <div style="display:flex; flex-direction:column; gap:20px; justify-content:center;">
+      <div class="card" style="background:var(--navy); border:none;">
+        <div class="stat-label" style="color:#A9B1B9;">Total Perkiraan Biaya</div>
+        <div style="font-size:44px; font-weight:700; color:#FFFFFF;">Rp 10.000.000.000</div>
+      </div>
+      <div>
+        <p style="font-size:14px; color:var(--muted); margin-bottom:8px;">Komposisi Anggaran</p>
+        <div style="display:flex; width:100%; height:32px; border-radius:8px; overflow:hidden;">
+          <div style="width:75.5%; background:var(--red);"></div>
+          <div style="width:24.5%; background:var(--line);"></div>
+        </div>
+        <p style="font-size:14px; color:var(--muted); margin-top:8px;">75,5% Perkerasan Aspal · 24,5% divisi lainnya (termasuk pondasi berbutir &amp; struktur)</p>
+      </div>
+    </div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 2 — Ruas Girilayu–Watusambang</span><span>18</span></div>
+</section>
+
+<!-- 16. KESIAPAN (ALT 2) -->
+<section class="page" id="kesiapan-2">
+  <h2 class="section-title">Kesiapan Pelaksanaan</h2>
+  <div style="display:flex; flex-direction:column; gap:14px;">
+    <div class="list-item"><div class="dot"></div><p>Detail Engineering Design (DED) lengkap — RAB dan gambar perencanaan tersusun oleh PT. Skala Pilar Lima, disahkan Juni 2026</p></div>
+    <div class="list-item"><div class="dot"></div><p>Dokumen SMKK tersedia dalam RAB</p></div>
+    <div class="list-item"><div class="dot"></div><p>Status Ruas No. 130 terkonfirmasi melalui data geodatabase jaringan jalan — selaras dengan kop gambar dan RAB</p></div>
+    <div class="list-item warn"><div class="dot"></div><p>Pelebaran +1,20 m tiap sisi berpotensi memerlukan tambahan ruang milik jalan — <em>agar dikonfirmasi kecukupan rumija/kebutuhan pembebasan lahan</em></p></div>
+    <div class="list-item"><div class="dot"></div><p>Siap diusulkan melalui aplikasi SITIA untuk verifikasi Direktorat SSPJJ, Ditjen Bina Marga</p></div>
+  </div>
+  <div class="footer-tag"><span>Alternatif 2 — Ruas Girilayu–Watusambang</span><span>19</span></div>
+</section>
+
+<!-- 17. PENUTUP -->
+<section class="page dark" id="penutup" style="min-height:90vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:28px;">
+  <p class="eyebrow">Permohonan Dukungan</p>
+  <h2 style="font-size:34px; color:#FFFFFF; max-width:960px; line-height:1.4;">Bersama ruas Colomadu–Banyuanyar yang telah diperoleh, Pemerintah Kabupaten Karanganyar memohon dukungan pendanaan IJD untuk dua ruas tambahan yang membentuk satu korkidor: Matesih–Girilayu dan Girilayu–Watusambang</h2>
+  <p style="font-size:19px; color:#C7CDD4; max-width:760px; line-height:1.6;">guna mewujudkan konektivitas wilayah dari Kecamatan Matesih hingga Tawangmangu, mendukung pelestarian wisata religi-budaya nasional, dan memperkuat ekonomi kerakyatan di sepanjang korkidor.</p>
+  <div>
+    <p style="font-weight:600; color:#FFFFFF;">Bidang Bina Marga</p>
+    <p style="color:#A9B1B9;">Dinas Pekerjaan Umum dan Perumahan Rakyat Kabupaten Karanganyar</p>
+  </div>
+</section>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+  // ===== ALTERNATIF 1: Matesih - Girilayu (real trase from KML) =====
+  var routeLatLngs = [[-7.6507999,111.0739872],[-7.6508149,111.0739355],[-7.6508491,111.0738784],[-7.6508625,111.073827],[-7.6508681,111.0738067],[-7.6508872,111.0737376],[-7.6508833,111.0736536],[-7.6508796,111.0735739],[-7.6508766,111.0735476],[-7.6508606,111.0734102],[-7.650832,111.073256],[-7.6508549,111.0731932],[-7.6508967,111.0731418],[-7.6509348,111.0730904],[-7.6510604,111.0730599],[-7.6511861,111.0730713],[-7.6512813,111.0730637],[-7.6513498,111.0730314],[-7.6513726,111.0729628],[-7.6513709,111.0729387],[-7.6513669,111.0728829],[-7.6513384,111.0727211],[-7.6513327,111.0725973],[-7.6513517,111.0724831],[-7.6513612,111.0723975],[-7.6513384,111.0723213],[-7.6513344,111.0723162],[-7.6513098,111.0722852],[-7.6512546,111.0722509],[-7.6511309,111.0722338],[-7.6510014,111.0722376],[-7.6507806,111.0722109],[-7.6506731,111.0721695],[-7.6505836,111.0720972],[-7.6505322,111.0720267],[-7.6505037,111.071924],[-7.6504884,111.0717526],[-7.6504656,111.0715699],[-7.6504884,111.0714557],[-7.650557,111.0712844],[-7.6506902,111.0710064],[-7.6507049,111.0709807],[-7.6507939,111.0708255],[-7.6508624,111.0707362],[-7.6509397,111.0706946],[-7.6511538,111.0705875],[-7.6513234,111.070537],[-7.6514245,111.0705132],[-7.6515405,111.0704953],[-7.6516238,111.0704329],[-7.6517725,111.0702633],[-7.6518498,111.0701592],[-7.6519093,111.0701057],[-7.6519837,111.0700581],[-7.6520521,111.0700254],[-7.6521116,111.0700016],[-7.6521592,111.0699808],[-7.6522038,111.069948],[-7.6523584,111.0695971],[-7.652525,111.0694454],[-7.6526113,111.0694008],[-7.6527213,111.0693562],[-7.6528611,111.0693175],[-7.6529771,111.0693056],[-7.6532597,111.0693115],[-7.6535095,111.0693443],[-7.6536701,111.0693859],[-7.65382,111.069415],[-7.653895,111.0694258],[-7.6539664,111.0694258],[-7.6540222,111.069404],[-7.6540306,111.0694008],[-7.6540949,111.0693044],[-7.6541305,111.0691581],[-7.6541413,111.069001],[-7.6541734,111.0688226],[-7.6542341,111.0687083],[-7.6543126,111.0684871],[-7.6543376,111.0683336],[-7.6543518,111.0682265],[-7.6543483,111.0681337],[-7.6543197,111.0680516],[-7.6542448,111.0679731],[-7.6541448,111.0679267],[-7.6540235,111.0678553],[-7.6538521,111.0678125],[-7.6536416,111.0677744],[-7.6535274,111.0677792],[-7.6534131,111.0677982],[-7.6533346,111.0677768],[-7.6532537,111.0677102],[-7.6531847,111.0676388],[-7.6531109,111.0675841],[-7.6530538,111.0675603],[-7.6530015,111.0675388],[-7.6529206,111.0675198],[-7.6527279,111.0674841],[-7.6526565,111.0674484],[-7.6525946,111.0673723],[-7.6525732,111.0673199],[-7.6525637,111.0672628],[-7.6525756,111.067132],[-7.6525898,111.0669559],[-7.6525922,111.0668607],[-7.6525708,111.0667274],[-7.6524685,111.0662872],[-7.6523015,111.0656067],[-7.6522361,111.065461],[-7.652126,111.0652558],[-7.6519327,111.0648988],[-7.6518108,111.064646],[-7.6517572,111.0645151],[-7.6517156,111.0643754],[-7.6517091,111.0643484],[-7.6516799,111.0642266],[-7.6515907,111.0636585],[-7.6515181,111.0633212],[-7.6514794,111.0632053],[-7.6513902,111.0629673],[-7.6512058,111.0625777],[-7.650947,111.0622237],[-7.6506674,111.0618519],[-7.6505372,111.0617326],[-7.6504111,111.0616517],[-7.6503087,111.0615351],[-7.6502088,111.0613614],[-7.650047,111.0609688],[-7.6499494,111.0607023],[-7.6497329,111.059986],[-7.6495266,111.0593174],[-7.6494664,111.0591223],[-7.649276,111.0582919],[-7.6492261,111.0580373],[-7.6491737,111.0577041],[-7.6490643,111.0572259],[-7.6490242,111.0570808],[-7.6489683,111.0568785],[-7.6489207,111.0567625],[-7.6488791,111.0566643],[-7.6488196,111.0565781],[-7.6487512,111.0564918],[-7.6486471,111.0564204],[-7.6485578,111.0563461],[-7.6484716,111.0562033],[-7.6483318,111.0559594],[-7.6480647,111.0556072],[-7.6478125,111.0551885],[-7.6477078,111.05501],[-7.6475722,111.0548577],[-7.6474246,111.0546555],[-7.6473699,111.0545579],[-7.6473057,111.0544246],[-7.6472533,111.05427],[-7.6471748,111.0541034],[-7.6471391,111.0540416],[-7.6469678,111.0539059],[-7.646875,111.0538274],[-7.6467284,111.0535952],[-7.6465214,111.0532787],[-7.6464286,111.0531526],[-7.6462882,111.0530051],[-7.6461193,111.0528742],[-7.6460146,111.0528123],[-7.6459622,111.0528004],[-7.6458742,111.0528218],[-7.645798,111.0528623],[-7.64571,111.0529218],[-7.6456362,111.0529503],[-7.6455815,111.0529527],[-7.6455196,111.0529337],[-7.6454292,111.0528908],[-7.6453519,111.0528206],[-7.6452186,111.0526636],[-7.6449212,111.0523281],[-7.6447047,111.0520354],[-7.6446119,111.0519402],[-7.6445524,111.0518998],[-7.6444881,111.0518451],[-7.6444501,111.0518284],[-7.6444049,111.0518403],[-7.6443449,111.0518122],[-7.6443287,111.0518046],[-7.6437774,111.0513434],[-7.6434472,111.0510816],[-7.6431766,111.0509002],[-7.6428107,111.0506741],[-7.6424562,111.0503606],[-7.6421921,111.0500858],[-7.6421583,111.0500558],[-7.6419993,111.0499145],[-7.6419672,111.0497717],[-7.641928,111.0494576],[-7.641878,111.0493184],[-7.6417959,111.0490793],[-7.6417281,111.0488723]];
+
+  var map = L.map('map', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  var route = L.polyline(routeLatLngs, {color:'#B3202C', weight:5, opacity:0.95}).addTo(map);
+  map.fitBounds(route.getBounds(), {padding:[24,24]});
+
+  var dotIcon = function(){
+    return L.divIcon({
+      className:'',
+      html:'<div style="width:16px;height:16px;border-radius:50%;background:#1C2B39;border:3px solid #FFFFFF;box-shadow:0 0 0 2px #1C2B39;"></div>',
+      iconSize:[16,16], iconAnchor:[8,8]
+    });
+  };
+
+  var akhir = routeLatLngs[0];
+  var awal = routeLatLngs[routeLatLngs.length - 1];
+
+  L.marker(akhir, {icon: dotIcon()}).addTo(map)
+    .bindPopup('<b>STA 3+780 — Akhir Pekerjaan</b><br>Girilayu');
+  L.marker(awal, {icon: dotIcon()}).addTo(map)
+    .bindPopup('<b>STA 0+000 — Awal Pekerjaan</b><br>Matesih');
+
+  // ===== ALTERNATIF 2: Girilayu - Watusambang (real trase from KML) =====
+  var routeLatLngs2 = [[-7.6550609,111.104506],[-7.6550628,111.1043924],[-7.6550787,111.1034488],[-7.6550788,111.1034471],[-7.6550847,111.1023169],[-7.6550728,111.1006156],[-7.6550789,111.1003552],[-7.6550907,111.0998482],[-7.6551347,111.098543],[-7.6551204,111.0984383],[-7.655049,111.0981909],[-7.6547635,111.0973581],[-7.6542686,111.0960303],[-7.6539925,111.0952927],[-7.6538069,111.0948644],[-7.6536213,111.0944884],[-7.6534929,111.09426],[-7.6533882,111.0941172],[-7.6532843,111.0939372],[-7.6532724,111.0938634],[-7.6533866,111.0937064],[-7.6534556,111.0936374],[-7.6535079,111.0936136],[-7.6536412,111.093566],[-7.6537387,111.0935089],[-7.6538101,111.0934542],[-7.6539053,111.0933423],[-7.6539838,111.0932115],[-7.6540838,111.0930378],[-7.6541242,111.0929616],[-7.6541266,111.0928355],[-7.6541313,111.0926047],[-7.6541837,111.0920479],[-7.6542265,111.0914852],[-7.6542818,111.0907565],[-7.6543177,111.0903944],[-7.65435,111.0902079],[-7.654371,111.090048],[-7.6543881,111.0896882],[-7.6543938,111.0894807],[-7.6543786,111.0890162],[-7.6543786,111.0888068],[-7.6543938,111.0887079],[-7.6544718,111.0886089],[-7.6545385,111.0885213],[-7.6545727,111.0884528],[-7.6545799,111.0884114],[-7.6545527,111.0882715],[-7.6544771,111.0880373],[-7.6544757,111.0879588],[-7.6544585,111.0878003],[-7.6544357,111.0877047],[-7.6543576,111.087461],[-7.6543424,111.0873658],[-7.6543519,111.0872535],[-7.6543805,111.0871622],[-7.6544433,111.0870613],[-7.6544795,111.0869623],[-7.6544909,111.0868747],[-7.6545118,111.0867358],[-7.6545461,111.0866767],[-7.6546184,111.0865797],[-7.6546527,111.0865092],[-7.6546774,111.086376],[-7.6546946,111.0862313],[-7.6546965,111.0861628],[-7.6546927,111.0860771],[-7.6546584,111.0859819],[-7.6546108,111.0858868],[-7.6545442,111.0857649],[-7.6545137,111.0856926],[-7.6545042,111.0854223],[-7.654498,111.0850321],[-7.6544766,111.0848584],[-7.6544718,111.0847323],[-7.6544552,111.084649],[-7.6544147,111.0845586],[-7.6543483,111.0844303],[-7.6542627,111.0843066],[-7.6541409,111.0841809],[-7.6540571,111.084061],[-7.6540495,111.0838364],[-7.6540247,111.0836765],[-7.6539524,111.0834157],[-7.6538096,111.0829817],[-7.6537906,111.0828846],[-7.6537898,111.0825047],[-7.6537674,111.0823378],[-7.6537531,111.0820999],[-7.6537293,111.0820023],[-7.6536794,111.0819071],[-7.6536627,111.0817977],[-7.6536794,111.0816454],[-7.6537079,111.0813813],[-7.6536936,111.0812528],[-7.653677,111.0810743],[-7.6536858,111.0809223],[-7.6537105,111.0807909],[-7.6537105,111.0806862],[-7.6536763,111.0805206],[-7.6536591,111.0803874],[-7.6536458,111.0801361],[-7.6535975,111.0794303],[-7.653588,111.0792971],[-7.6535785,111.0791615],[-7.6535499,111.079033],[-7.6534952,111.0789188],[-7.6534095,111.0787998],[-7.6533144,111.0787094],[-7.653212,111.0786118],[-7.6531787,111.0785951],[-7.6530334,111.0785865],[-7.6529622,111.0785761],[-7.6528054,111.0785476],[-7.6527502,111.0785209],[-7.6527426,111.0784333],[-7.6527445,111.0778737],[-7.6527358,111.0777464],[-7.6527313,111.0776791],[-7.6527235,111.0774201],[-7.65269,111.0773362],[-7.6525034,111.0769355],[-7.652344,111.076442],[-7.6518988,111.0759049],[-7.6513853,111.0753059],[-7.6510461,111.0748306],[-7.6508694,111.0744836],[-7.6507999,111.0739872]];
+
+  var map2 = L.map('map2', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map2);
+
+  var route2 = L.polyline(routeLatLngs2, {color:'#B3202C', weight:5, opacity:0.95}).addTo(map2);
+  map2.fitBounds(route2.getBounds(), {padding:[24,24]});
+
+  var alt2Akhir = routeLatLngs2[0];
+  var alt2Awal = routeLatLngs2[routeLatLngs2.length - 1];
+
+  L.marker(alt2Awal, {icon: dotIcon()}).addTo(map2)
+    .bindPopup('<b>STA 0+000 — Awal Pekerjaan</b><br>Girilayu (lanjutan Alternatif 1)');
+  L.marker(alt2Akhir, {icon: dotIcon()}).addTo(map2)
+    .bindPopup('<b>STA 3+660 — Akhir Pekerjaan</b><br>Plumbon / Watusambang');
+
+  // ===== PAKET IJD 2026: Colomadu - Banyuanyar (real trase from KML, data jaringan jalan) =====
+  var routeLatLngs3 = [[-7.5362672,110.7998773],[-7.5360233,110.798872],[-7.53594,110.7979916],[-7.5357675,110.7969684],[-7.5354403,110.7958441],[-7.5353154,110.7948983],[-7.5352285,110.7941642],[-7.5351,110.7934694],[-7.5349573,110.7924986],[-7.5347479,110.7913945],[-7.5345004,110.7899526],[-7.5342958,110.7886791],[-7.5341387,110.7873085],[-7.5340388,110.7858332],[-7.5339912,110.7847149],[-7.533975,110.7834842],[-7.5339417,110.7827561],[-7.5337752,110.7813142],[-7.5337323,110.7806622],[-7.5338584,110.7782613],[-7.5340079,110.7759748],[-7.5340745,110.7747898],[-7.5340931,110.7744555],[-7.5340633,110.77417],[-7.5337956,110.7728078],[-7.5335636,110.7718679],[-7.5333733,110.7711897],[-7.5331978,110.7707019],[-7.5329331,110.7700714],[-7.5328141,110.7693932],[-7.5327249,110.7689947],[-7.5325999,110.7684742],[-7.5324215,110.7678139],[-7.5323679,110.7675194],[-7.5323263,110.7671476],[-7.5323144,110.7667461],[-7.5323828,110.7661869],[-7.5325476,110.765338],[-7.5326904,110.7644422],[-7.5327689,110.7638925],[-7.5327713,110.763554],[-7.5327266,110.7630722],[-7.532682,110.7625814],[-7.5326493,110.7623643],[-7.5325898,110.7620996],[-7.5324411,110.7617159],[-7.5317283,110.7601163],[-7.5313571,110.7592999],[-7.5309496,110.758369],[-7.5308225,110.7580043],[-7.5307035,110.7575581],[-7.5305667,110.7569008],[-7.5304358,110.7560948],[-7.5300868,110.7537778],[-7.5299232,110.7527717],[-7.529859,110.7523398],[-7.5298126,110.7519329],[-7.5298019,110.7517152],[-7.5298876,110.7505588],[-7.5299375,110.7496629],[-7.5299375,110.7492346],[-7.5299262,110.7489727],[-7.5298608,110.7483422],[-7.5298072,110.7478187]];
+
+  var map3 = L.map('map3', {scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 18,
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map3);
+
+  var route3 = L.polyline(routeLatLngs3, {color:'#B3202C', weight:5, opacity:0.95}).addTo(map3);
+  map3.fitBounds(route3.getBounds(), {padding:[24,24]});
+
+  var colomaduA = routeLatLngs3[0];
+  var colomaduB = routeLatLngs3[routeLatLngs3.length - 1];
+
+  L.marker(colomaduA, {icon: dotIcon()}).addTo(map3)
+    .bindPopup('<b>Titik Ujung Ruas A</b><br>Colomadu – Banyuanyar');
+  L.marker(colomaduB, {icon: dotIcon()}).addTo(map3)
+    .bindPopup('<b>Titik Ujung Ruas B</b><br>Colomadu – Banyuanyar');
+</script>
+</body>
+</html>
